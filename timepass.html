@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Number Game</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .game-container {
+        text-align: center;
+        margin-top: 50px;
+      }
+      .random-number {
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+      }
+      #victor {
+        font-size: 24px;
+        font-weight: bold;
+        color: green;
+        margin-top: 20px;
+      }
+      #scores {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <h1>Random Number Game</h1>
+      <img id="randomNumber1" class="random-number" src="dice1.png" alt="Random Number 1" />
+      <img id="randomNumber2" class="random-number" src="dice1.png" alt="Random Number 1" />
+      <br />
+      <button id="generateButton">Generate Random Number</button>
+      <div id="victor"></div>
+      <div id="scores">
+        <p>Player 1 Score: <span id="score1">0</span></p>
+        <p>Player 2 Score: <span id="score2">0</span></p>
+      </div>
+    </div>
+
+    <script>
+      var currentPlayer = 1;
+      var player1Score = 0;
+      var player2Score = 0;
+
+      // Function to roll a random number between 1 and 6
+      function rollRandomNumber() {
+        return Math.floor(Math.random() * 6) + 1;
+      }
+
+      // Function to update the random number image and calculate the score
+      function updateRandomNumber() {
+        var randomNumber = rollRandomNumber();
+        document.getElementById("randomNumber" + currentPlayer).src =
+          "dice" + randomNumber + ".png";
+
+        // Update score for the current player
+        if (currentPlayer === 1) {
+          player1Score += randomNumber;
+          document.getElementById("score1").innerText = player1Score;
+        } else {
+          player2Score += randomNumber;
+          document.getElementById("score2").innerText = player2Score;
+        }
+
+        return randomNumber;
+      }
+
+      // Function to check for a winner
+      function checkVictor() {
+        if (player1Score >= 10) {
+          document.getElementById("victor").innerText = "Player 1 wins!";
+          document.getElementById("generateButton").disabled = true;
+        } else if (player2Score >= 10) {
+          document.getElementById("victor").innerText = "Player 2 wins!";
+          document.getElementById("generateButton").disabled = true;
+        }
+      }
+
+      // Event listener for the generate button
+      document
+        .getElementById("generateButton")
+        .addEventListener("click", function () {
+          var randomNumber = updateRandomNumber();
+          checkVictor();
+
+          // Switch to the next player
+          currentPlayer = currentPlayer === 1 ? 2 : 1;
+        });
+    </script>
+  </body>
+</html>
